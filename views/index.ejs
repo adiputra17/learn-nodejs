@@ -1,0 +1,94 @@
+<!doctype html>
+<!-- By : Adi Putra Utama - 2018 -->
+<html ng-app="myApp">
+    <head>
+        <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <!-- jQuery library -->
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <!-- Latest compiled JavaScript -->
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+        <script type="text/javascript">
+            var app = angular.module('myApp', []);
+            app.controller('leftMenu', function($scope) {
+                $scope.title = "List Category"; 
+                $scope.menus = ["Fashion", "Electronic", "Sport", "Furniture", "Health", "Computer", "Smartphone"];
+            });
+            app.controller('rightMenu', function($scope) {
+                $scope.title = "The Most Popular"; 
+                $scope.menus = ["Fashion", "Electronic", "Sport", "Furniture", "Health", "Computer", "Smartphone"];   
+            });
+
+            var rows = <%-JSON.stringify(data)%>;
+            var json = JSON.parse(rows);
+            var res = JSON.parse(json);
+            console.log(res.result);
+            app.controller('getAllItem', function($scope) {
+                $scope.get_data = res.result;
+            });
+        </script>
+    </head>
+   
+    <body>
+        <div class="row" style="margin: 20px 20px 20px 20px">
+            <div class="col-md-3">
+                <div class = "panel panel-primary" ng-controller="leftMenu">
+                    <div class = "panel-heading">
+                        <h3 class = "panel-title">{{title}}</h3>
+                    </div>
+                    <div class = "panel-body">
+                        <ul>
+                            <li ng-repeat="menu in menus"><a href="#">{{menu}}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-7">
+                <div class = "panel panel-primary">
+                    <div class = "panel-heading">
+                        <h3 class = "panel-title">List Item</h3>
+                    </div>
+                    <div class = "panel-body">
+                        <input type = "text" class = "form-control" ng-model = "yourItem" placeholder = "Search item here">
+                        <h3>You search is {{yourItem}}!</h3>
+                        <br>
+                        <div class="row" ng-controller="getAllItem">
+                            <div class="col-md-6" ng-repeat="data in get_data">
+                                <table class="table">
+                                    <tr>
+                                        <td width="20%" rowspan="3"> 
+                                            <center><img src="{{ data.gambar }}" height="100px" width="70px"></center> <br>
+                                            <center>
+                                                <a style="width: 100%" href="http://127.0.0.1:3000/detail-item/{{data.id}}" class="btn btn-sm btn-info" role="button" >Detail</a>
+                                            </center>
+                                        </td>
+                                        <td width=""><b>Merk &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> {{data.nama}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td width=""><b>Harga &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:</b> {{data.harga}} </td>
+                                    </tr>
+                                    <tr>
+                                        <td width=""><b>Deskripsi :</b> {{data.deskripsi}} </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-2">
+                <div class = "panel panel-primary" ng-controller="rightMenu">
+                    <div class = "panel-heading">
+                        <h3 class = "panel-title">{{title}}</h3>
+                    </div>
+                    <div class = "panel-body">
+                        <!-- <ul> -->
+                            <div ng-repeat="menu in menus"><span class="label label-info">{{menu}}</span></div>
+                        <!-- </ul> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
