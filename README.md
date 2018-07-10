@@ -1,4 +1,4 @@
 ### LEARN NODEJS 
-> Database : MySQL__
-> Express JS__
-> RUN : nodemon server.js (terminal)__
+> Database : MySQL <br />
+> Express JS <br />
+> RUN : nodemon server.js (terminal) <br />
