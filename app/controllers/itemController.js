@@ -11,7 +11,7 @@ router.post('/', function (req, res) {
     var nama    = req.body.nama;
     var harga   = req.body.harga;
     var gambar  = req.body.gambar;
-    var desk    = req.body.desk;
+    var desk    = req.body.deskripsi;
     console.log("body : "+nama+" "+harga+" "+gambar+" "+desk);
     if(!(nama || harga || gambar || desk)) {
         return res.status(400).send({
@@ -68,30 +68,48 @@ router.get('/:id', function (req, res) {
             result  :err
         });
     else
-        return res.json({
-            status  :'200',
-            message :'success',
-            result  :result
-        });
-        // console.log(result);
+        if (result == '') {
+            return res.json({
+                status  :'404',
+                message :'data not found',
+            });
+        }else{
+            return res.json({
+                status  :'200',
+                message :'success',
+                result  :result
+            });
+        }
     });
 });
 
 router.delete('/:id', function (req, res) {
     var id = req.params.id;
     console.log(id);
-    var query = "DELETE FROM item WHERE id = "+id+"";
+    var query = "SELECT * FROM item WHERE id = "+id+"";
     connection.query(query, function(err, result, fields){
     if(err)
         return res.json({
             status  :'400',
             message :'failed',
+            result  :err
         });
     else
-        return res.json({
-            status  :'200',
-            message :'success',
-        });
+        if (result == '') {
+            return res.json({
+                status  :'404',
+                message :'data not found',
+            });
+        }else{
+            var query = "DELETE FROM item WHERE id = "+id+"";
+            connection.query(query, function(err, result, fields){
+                return res.json({
+                    status  :'200',
+                    message :'delete success',
+                    result  :result
+                });
+            });
+        }
     });
 });
 
